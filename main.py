@@ -259,6 +259,11 @@ class ConnectFour:
                 self.winner = self.turn
                 print(f"Player {self.winner} wins!")
                 break
+
+            if self.board.isBoardFull():
+                self.gameOver = True
+                print("It's a tie!")
+                break
             
             self.switchTurn()
 
