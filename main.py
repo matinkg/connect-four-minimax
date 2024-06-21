@@ -210,8 +210,14 @@ class ConnectFour:
         print ("Welcome to Connect Four!")
         # choose between playing against AI or another player
         while self.opponent_type is None:
-            opponent = input("Do you want to play against AI or another player? (AI/Player): ")
-            if opponent.lower() == "ai":
+            print ("Do you want to play against AI or another player?")
+            print ("1. AI")
+            print ("2. Player")
+            
+            opponent = input("\nEnter your choice (1 or 2): ")
+            print ()
+
+            if opponent.isdigit() and int(opponent) == 1:
                 self.opponent_type = "ai"
 
                 print("Choose the difficulty level:")
@@ -232,10 +238,10 @@ class ConnectFour:
                     else:
                         print("Invalid input. Please enter a number between 1 and 6...")
                         
-            elif opponent.lower() == "player":
+            elif opponent.isdigit() and int(opponent) == 2:
                 self.opponent_type = "player"
             else:
-                print("Invalid input. Please enter 'AI' or 'Player'...")
+                print("Invalid input. Please enter 1 or 2...")
 
 
         # random turn
