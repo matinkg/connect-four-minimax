@@ -257,12 +257,12 @@ class ConnectFour:
             if self.board.checkWin():
                 self.gameOver = True
                 self.winner = self.turn
-                print(f"Player {self.winner} wins!")
+                print(f"\n\n**** Player {self.winner} wins! ****\n\n")
                 break
 
             if self.board.isBoardFull():
                 self.gameOver = True
-                print("It's a tie!")
+                print("\n\n**** It's a tie! ****\n\n")
                 break
             
             self.switchTurn()
