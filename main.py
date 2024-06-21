@@ -1,4 +1,5 @@
 import random
+import copy
 
 EMPTY = ' '
 PLAYER1 = 'X'
@@ -117,6 +118,22 @@ class Board:
                 score += self.evaluate_window(window, player)
         
         return score
+    
+    # a function to get all the possible moves
+    def getValidMoves(self):
+        valid_moves = []
+        for col in range(7):
+            if self.board[0][col] == EMPTY:
+                valid_moves.append(col)
+        return valid_moves
+    
+    # a function to check if the board is full
+    def isBoardFull(self):
+        for row in range(6):
+            for col in range(7):
+                if self.board[row][col] == EMPTY:
+                    return False
+        return True
 
 class ConnectFour:
     def __init__(self):
@@ -140,6 +157,43 @@ class ConnectFour:
     def switchTurn(self):
         self.turn = PLAYER1 if self.turn == PLAYER2 else PLAYER2
 
+    def minimax(self, board, depth, maximizingPlayer):
+        valid_moves = board.getValidMoves()
+        is_terminal = board.isBoardFull() or board.checkWin()
+        if depth == 0 or is_terminal:
+            if is_terminal:
+                if board.checkWin() == PLAYER2:
+                    return (None, 100000000000000)
+                elif board.checkWin() == PLAYER1:
+                    return (None, -100000000000000)
+                else:
+                    return (None, 0)
+            else:
+                return (None, board.evalScore(PLAYER2))
+        
+        if maximizingPlayer:
+            value = -100000000000000
+            column = random.choice(valid_moves)
+            for col in valid_moves:
+                board_copy = copy.deepcopy(board)
+                board_copy.dropPiece(col, PLAYER2)
+                new_score = self.minimax(board_copy, depth - 1, False)[1]
+                if new_score > value:
+                    value = new_score
+                    column = col
+            return column, value
+        else:
+            value = 100000000000000
+            column = random.choice(valid_moves)
+            for col in valid_moves:
+                board_copy = copy.deepcopy(board)
+                board_copy.dropPiece(col, PLAYER1)
+                new_score = self.minimax(board_copy, depth - 1, True)[1]
+                if new_score < value:
+                    value = new_score
+                    column = col
+            return column, value
+
     def playGame(self):
         # random turn
         self.turn = PLAYER1 if random.randint(0, 1) == 0 else PLAYER2
@@ -148,7 +202,14 @@ class ConnectFour:
         self.board.printBoard()
         
         while not self.gameOver:
-            self.makeMove()
+            # if ai turn
+            if self.turn == PLAYER2:
+                column, minimax_score = self.minimax(self.board, 5, True)
+                print(f"Player {self.turn} chooses column {column + 1}")
+                self.board.dropPiece(column, self.turn)
+            else:
+                self.makeMove()
+                
             self.board.printBoard()
             
             if self.board.checkWin():
