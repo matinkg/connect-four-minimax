@@ -141,6 +141,8 @@ class ConnectFour:
         self.gameOver = False
         self.turn = PLAYER1
         self.winner = None
+        self.opponent_type = None
+        self.depth = None
 
     def makeMove(self):
         print(f"Player {self.turn}'s turn")
@@ -153,6 +155,12 @@ class ConnectFour:
         column = int(column)
 
         self.board.dropPiece(column - 1, self.turn)
+
+    def makeAIMove(self):
+        print(f"Player {self.turn}'s turn")
+        column, minimax_score = self.minimax(self.board, self.depth, True)
+        print(f"Player {self.turn} chooses column {column + 1}")
+        self.board.dropPiece(column, self.turn)
 
     def switchTurn(self):
         self.turn = PLAYER1 if self.turn == PLAYER2 else PLAYER2
@@ -195,18 +203,44 @@ class ConnectFour:
             return column, value
 
     def playGame(self):
+        print ("Welcome to Connect Four!")
+        # choose between playing against AI or another player
+        while self.opponent_type is None:
+            opponent = input("Do you want to play against AI or another player? (AI/Player): ")
+            if opponent.lower() == "ai":
+                self.opponent_type = "ai"
+
+                print("Choose the difficulty level:")
+                print("1. Easy")
+                print("2. Medium")
+                print("3. Hard")
+                print("4. Expert")
+                print("5. Impossible")
+                print("6. Extremely Impossible")
+
+                while self.depth is None:
+                    level = input()
+                    if level.isdigit() and 1 <= int(level) <= 7:
+                        self.depth = int(level)
+                    else:
+                        print("Invalid input. Please enter a number between 1 and 6...")
+                        
+            elif opponent.lower() == "player":
+                self.opponent_type = "player"
+            else:
+                print("Invalid input. Please enter 'AI' or 'Player'...")
+
+        print ("---- Let's start the game! ----")
+        
         # random turn
         self.turn = PLAYER1 if random.randint(0, 1) == 0 else PLAYER2
         print(f"Player {self.turn} goes first")
-
         self.board.printBoard()
         
         while not self.gameOver:
             # if ai turn
-            if self.turn == PLAYER2:
-                column, minimax_score = self.minimax(self.board, 5, True)
-                print(f"Player {self.turn} chooses column {column + 1}")
-                self.board.dropPiece(column, self.turn)
+            if self.opponent_type == "ai" and self.turn == PLAYER2:
+                self.makeAIMove()
             else:
                 self.makeMove()
                 
