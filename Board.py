@@ -2,12 +2,19 @@ from config import *
 
 class Board:
     def __init__(self):
-        self.board = [[' ' for _ in range(7)] for _ in range(6)]
+        self._board = [[' ' for _ in range(7)] for _ in range(6)]
 
+    @property
+    def board(self):
+        return self._board
+    
+    @board.setter
+    def board(self, board):
+        self._board = board
+    
     # print the board
     def printBoard(self):
-
-        for row in self.board:
+        for row in self._board:
             print ('|' + '|'.join(row) + '|')
         
         # print horizontal line
@@ -18,12 +25,12 @@ class Board:
 
     def dropPiece(self, column, player):
         for row in range(5, -1, -1):
-            if self.board[row][column] == EMPTY:
-                self.board[row][column] = player
+            if self._board[row][column] == EMPTY:
+                self._board[row][column] = player
                 break
 
     def checkWin(self):
-        board = self.board
+        board = self._board
 
         # check horizontal
         for row in range(6):
@@ -79,13 +86,13 @@ class Board:
         # so we give it a little higher score
         center_column = []
         for row in range(6):
-            center_column.append(self.board[row][3])
+            center_column.append(self._board[row][3])
         center_count = center_column.count(player)
         score += center_count * 3
 
         # horizontal
         for row in range(6):
-            row_array = self.board[row]
+            row_array = self._board[row]
             for col in range(4):
                 window = row_array[col:col + 4]
                 score += self.evaluate_window(window, player)
@@ -94,7 +101,7 @@ class Board:
         for col in range(7):
             col_array = []
             for row in range(6):
-                col_array.append(self.board[row][col])
+                col_array.append(self._board[row][col])
                 
             for row in range(3):
                 window = col_array[row:row + 4]
@@ -103,12 +110,12 @@ class Board:
         # diagonal
         for row in range(3):
             for col in range(4):
-                window = [self.board[row + i][col + i] for i in range(4)]
+                window = [self._board[row + i][col + i] for i in range(4)]
                 score += self.evaluate_window(window, player)
         
         for row in range(3):
             for col in range(4):
-                window = [self.board[row + 3 - i][col + i] for i in range(4)]
+                window = [self._board[row + 3 - i][col + i] for i in range(4)]
                 score += self.evaluate_window(window, player)
         
         return score
@@ -117,7 +124,7 @@ class Board:
     def getValidMoves(self):
         valid_moves = []
         for col in range(7):
-            if self.board[0][col] == EMPTY:
+            if self._board[0][col] == EMPTY:
                 valid_moves.append(col)
         return valid_moves
     
@@ -125,6 +132,6 @@ class Board:
     def isBoardFull(self):
         for row in range(6):
             for col in range(7):
-                if self.board[row][col] == EMPTY:
+                if self._board[row][col] == EMPTY:
                     return False
         return True
