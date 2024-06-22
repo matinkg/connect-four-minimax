@@ -2,6 +2,7 @@ from config import *
 from Board import Board
 import random
 import copy
+import time
 
 class ConnectFour:
     def __init__(self):
@@ -32,6 +33,7 @@ class ConnectFour:
     def makeAIMove(self):
         print(f"\nPlayer {self.turn}'s turn. AI is thinking...")
         column, minimax_score = self.minimax(self.board, self.depth, True)
+        time.sleep(1)
         print(f"Player {self.turn} chooses column {column + 1}")
         self.board.dropPiece(column, self.turn)
 
