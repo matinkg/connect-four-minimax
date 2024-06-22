@@ -40,41 +40,48 @@ class ConnectFour:
     def switchTurn(self):
         self.turn = PLAYER1 if self.turn == PLAYER2 else PLAYER2
 
-    def minimax(self, board, depth, maximizingPlayer):
+    def minimax(self, board, depth, maximizingPlayer, alpha=-float('inf'), beta=float('inf')):
         valid_moves = board.getValidMoves()
         is_terminal = board.isBoardFull() or board.checkWin()
+        
         if depth == 0 or is_terminal:
             if is_terminal:
                 if board.checkWin() == PLAYER2:
-                    return (None, 100000000000000 + depth)
+                    return (None, 1000000 + depth)
                 elif board.checkWin() == PLAYER1:
-                    return (None, -100000000000000 - depth)
+                    return (None, -1000000 - depth)
                 else:
                     return (None, 0)
             else:
                 return (None, board.evalScore(PLAYER2))
         
         if maximizingPlayer:
-            value = -100000000000000
+            value = -float('inf')
             column = random.choice(valid_moves)
             for col in valid_moves:
                 board_copy = copy.deepcopy(board)
                 board_copy.dropPiece(col, PLAYER2)
-                new_score = self.minimax(board_copy, depth - 1, False)[1]
+                new_score = self.minimax(board_copy, depth - 1, False, alpha, beta)[1]
                 if new_score > value:
                     value = new_score
                     column = col
+                alpha = max(alpha, value)
+                if alpha >= beta:
+                    break
             return (column, value)
         else:
-            value = 100000000000000
+            value = float('inf')
             column = random.choice(valid_moves)
             for col in valid_moves:
                 board_copy = copy.deepcopy(board)
                 board_copy.dropPiece(col, PLAYER1)
-                new_score = self.minimax(board_copy, depth - 1, True)[1]
+                new_score = self.minimax(board_copy, depth - 1, True, alpha, beta)[1]
                 if new_score < value:
                     value = new_score
                     column = col
+                beta = min(beta, value)
+                if alpha >= beta:
+                    break
             return (column, value)
 
     def playGame(self):

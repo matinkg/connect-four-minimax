@@ -12,4 +12,4 @@ game.getBoard().board =[
     ['O', 'X', 'X', 'O', 'X', ' ', ' ']
 ]
 
-print (game.minimax(game.getBoard(), 5, True))
+print (game.minimax(game.getBoard(), 8, True))
