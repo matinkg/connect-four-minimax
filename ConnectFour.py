@@ -99,22 +99,24 @@ class ConnectFour:
                 self.opponent_type = "ai"
 
                 print("Choose the difficulty level:")
-                print("1. Easy")
-                print("2. Medium")
-                print("3. Hard")
-                print("4. Expert")
-                print("5. Impossible")
-                print("6. Extremely Impossible")
-                print("7. Inhuman")
-                print("8. Godlike")
+                print("1. Very Easy")
+                print("2. Easy")
+                print("3. Medium")
+                print("4. Hard")
+                print("5. Expert")
+                print("6. Master")
+                print("7. Impossible")
+                print("8. Inhuman")
+                print("9. Godlike")
+                print("10. Legendary")
 
 
                 while self.depth is None:
-                    level = input("\nEnter the difficulty level (1-8): ")
-                    if level.isdigit() and 1 <= int(level) <= 8:
+                    level = input("\nEnter the difficulty level (1-10): ")
+                    if level.isdigit() and 1 <= int(level) <= 10:
                         self.depth = int(level)
                     else:
-                        print("Invalid input. Please enter a number between 1 and 6...")
+                        print("Invalid input. Please enter a number between 1 and 10...")
                         
             elif opponent.isdigit() and int(opponent) == 2:
                 self.opponent_type = "player"
