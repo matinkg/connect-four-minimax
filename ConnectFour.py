@@ -114,6 +114,13 @@ class ConnectFour:
                 while self.depth is None:
                     level = input("\nEnter the difficulty level (1-10): ")
                     if level.isdigit() and 1 <= int(level) <= 10:
+                        # verify it if user chooses number > 8
+                        if int(level) > 8:
+                            print("It may take up to 10 minutes to make a move for ai.\nAre you sure you want to continue? (y/N)")
+                            answer = input()
+                            if answer.lower() != "y":
+                                continue
+                        
                         self.depth = int(level)
                     else:
                         print("Invalid input. Please enter a number between 1 and 10...")
