@@ -12,6 +12,9 @@ class ConnectFour:
         self.opponent_type = None
         self.depth = None
 
+    def getBoard(self):
+        return self.board
+
     def makeMove(self):
         print(f"\nPlayer {self.turn}'s turn")
         column = input("Enter column number: ")
@@ -43,9 +46,9 @@ class ConnectFour:
         if depth == 0 or is_terminal:
             if is_terminal:
                 if board.checkWin() == PLAYER2:
-                    return (None, 100000000000000)
+                    return (None, 100000000000000 + depth)
                 elif board.checkWin() == PLAYER1:
-                    return (None, -100000000000000)
+                    return (None, -100000000000000 - depth)
                 else:
                     return (None, 0)
             else:
@@ -61,7 +64,7 @@ class ConnectFour:
                 if new_score > value:
                     value = new_score
                     column = col
-            return column, value
+            return (column, value)
         else:
             value = 100000000000000
             column = random.choice(valid_moves)
@@ -72,7 +75,7 @@ class ConnectFour:
                 if new_score < value:
                     value = new_score
                     column = col
-            return column, value
+            return (column, value)
 
     def playGame(self):
         print ("Welcome to Connect Four!")
