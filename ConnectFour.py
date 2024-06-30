@@ -24,6 +24,12 @@ class ConnectFour:
         if not column.isdigit() or int(column) < 1 or int(column) > 7:
             print("Invalid input. Please enter a number between 1 and 7...")
             return self.makeMove()
+        
+        # check if column is full
+        if not self.board.isValidMove(int(column) - 1):
+            print("Column is full. Please choose another column...")
+            return self.makeMove()
+        
         column = int(column)
 
         self.board.dropPiece(column - 1, self.turn)
