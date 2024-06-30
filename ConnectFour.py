@@ -25,12 +25,13 @@ class ConnectFour:
             print("Invalid input. Please enter a number between 1 and 7...")
             return self.makeMove()
         
+        column = int(column)
+        
         # check if column is full
-        if not self.board.isValidMove(int(column) - 1):
+        if column - 1 not in self.board.getValidMoves():
             print("Column is full. Please choose another column...")
             return self.makeMove()
         
-        column = int(column)
 
         self.board.dropPiece(column - 1, self.turn)
 
